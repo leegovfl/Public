@@ -5,6 +5,9 @@ $outputFolder = "c:\ITS"
 
 Connect-MgGraph
 
+Install-Module Microsoft.Graph.Files
+Import-Module Microsoft.Graph.Files
+
 $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
 
 $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq 'apv2'"
