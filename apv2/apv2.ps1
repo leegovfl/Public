@@ -23,7 +23,7 @@ foreach ($spd in $spds.value)
         $driveId = $spd.id
     }
 }
-$driveId
+#$driveId
 
 #create dir with permissons?
 
