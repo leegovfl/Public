@@ -23,9 +23,6 @@ foreach ($spd in $spds.value)
         $driveId = $spd.id
     }
 }
-#$driveId
-
-#create dir with permissons?
 
 if($driveId -ne ""){
 
