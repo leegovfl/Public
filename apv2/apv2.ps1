@@ -3,6 +3,9 @@ $spSitePath = "/sites/InformationTechnology"
 $spLibrary = "apv2"
 $outputFolder = "c:\ITS"
 
+Install-Module Microsoft.Graph
+Import-Module Microsoft.Graph
+
 Connect-MgGraph
 
 Install-Module Microsoft.Graph.Files
