@@ -6,7 +6,7 @@ $outputFolder = "c:\ITS"
 #Install-Module Microsoft.Graph
 #Import-Module Microsoft.Graph
 
-Install-Module Microsoft.Graph.Files
+Install-Module Microsoft.Graph.Files -Force
 Import-Module Microsoft.Graph.Files
 
 Connect-MgGraph
