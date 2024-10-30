@@ -3,13 +3,13 @@ $spSitePath = "/sites/InformationTechnology"
 $spLibrary = "apv2"
 $outputFolder = "c:\ITS"
 
-Install-Module Microsoft.Graph
-Import-Module Microsoft.Graph
-
-Connect-MgGraph
+#Install-Module Microsoft.Graph
+#Import-Module Microsoft.Graph
 
 Install-Module Microsoft.Graph.Files
 Import-Module Microsoft.Graph.Files
+
+Connect-MgGraph
 
 $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
 
