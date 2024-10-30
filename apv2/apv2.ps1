@@ -35,3 +35,7 @@ if($driveId -ne ""){
 
 
 }
+
+powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
+powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
+powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
