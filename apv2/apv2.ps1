@@ -39,3 +39,13 @@ if($driveId -ne ""){
 powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
 powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
 powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+
+
+$title    = 'Restart Computer'
+$question = 'Do you want to restart computer now?'
+$choices  = '&Yes', '&No'
+
+$decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
+if ($decision -eq 0) {
+    shutdown -r -f -t 00
+}
