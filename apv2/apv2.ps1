@@ -45,7 +45,7 @@ powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
 
 $title    = 'Restart Computer'
-$question = 'Do you want to restart computer now?'
+$question = 'Do you want to restart this computer now?'
 $choices  = '&Yes', '&No'
 
 $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
