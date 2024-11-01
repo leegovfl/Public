@@ -35,17 +35,24 @@ if($driveId -ne ""){
 
 
 }
-
-powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
-powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
-powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
-
-
-$title    = 'Restart Computer'
-$question = 'Do you want to restart this computer now?'
+$title    = 'Pre-Provision Computer'
+$question = 'Do you want to start the pre-provisioning process on this computer?'
 $choices  = '&Yes', '&No'
-
 $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
 if ($decision -eq 0) {
-    shutdown -r -f -t 00
+
+    powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
+    powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
+    powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackground.ps1"
+    powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+    
+    
+    $title    = 'Restart Computer'
+    $question = 'Do you want to restart this computer now?'
+    $choices  = '&Yes', '&No'
+    
+    $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
+    if ($decision -eq 0) {
+        shutdown -r -f -t 00
+    }
 }
