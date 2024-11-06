@@ -41,6 +41,13 @@ $choices  = '&Yes', '&No'
 $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
 if ($decision -eq 0) {
 
+    $dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
+    if (-not (Test-Path $dest))
+    {
+        mkdir $dest
+    }
+    Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest
+    
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
