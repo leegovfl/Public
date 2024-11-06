@@ -46,7 +46,7 @@ if ($decision -eq 0) {
     {
         mkdir $dest
     }
-    Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest
+    Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force
     
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
