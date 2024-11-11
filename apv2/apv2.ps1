@@ -73,7 +73,7 @@ if ($decision -eq 0) {
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
     
-    Disable-LocalUser -Name "Administrator"
+    #Disable-LocalUser -Name "Administrator"
     
     $title    = 'Restart Computer'
     $question = 'Do you want to restart this computer now?'
