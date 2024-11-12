@@ -67,7 +67,10 @@ if ($decision -eq 0) {
     }
     Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force
     #Copy-Item "$($outputFolder)\unattend.xml" -Destination "%WINDIR%\Panther\Unattend" -Force
-    Copy-Item "$($outputFolder)\unattend.xml" -Destination "$($env:WINDIR)\Panther" -Force 
+    Copy-Item "$($outputFolder)\Unattend.xml" -Destination "$($env:WINDIR)\Panther\Unattend" -Force 
+    Copy-Item "$($outputFolder)\Unattend.xml" -Destination "$($env:WINDIR)\Panther" -Force 
+    Copy-Item "$($outputFolder)\Unattend.xml" -Destination "$($env:WINDIR)\System32\Sysprep" -Force 
+    Copy-Item "$($outputFolder)\Unattend.xml" -Destination "$($env:SYSTEMDRIVE)" -Force 
     
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
