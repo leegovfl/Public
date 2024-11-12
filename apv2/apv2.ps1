@@ -12,7 +12,10 @@ Import-Module Microsoft.Graph.Files
 Connect-MgGraph
 
 # Create the folder
-New-Item -Path $outputFolder -ItemType Directory
+if (-not (Test-Path $outputFolder))
+{
+    New-Item -Path $outputFolder -ItemType Directory
+}
 
 # Set permissions to allow only Administrators full access
 $acl = Get-Acl $outputFolder
