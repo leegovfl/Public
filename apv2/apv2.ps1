@@ -70,7 +70,8 @@ if ($decision -eq 0) {
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"    
-    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
+    powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
+    powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"        
     #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
     
     #Disable-LocalUser -Name "Administrator"
