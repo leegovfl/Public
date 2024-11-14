@@ -82,8 +82,8 @@ if ($decision -eq 0) {
     
     #$decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
     #if ($decision -eq 0) {
-        cd "$($env:SystemRoot)\system32\sysprep"
-        .\sysprep.exe /unattend:"$($outputFolder)\Unattend.xml" /oobe /reboot
+       # cd "$($env:SystemRoot)\system32\sysprep"
+       # .\sysprep.exe /unattend:"$($outputFolder)\Unattend.xml" /oobe /reboot
         #shutdown -r -f -t 00
     #}
 }
