@@ -72,18 +72,7 @@ if ($decision -eq 0) {
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"    
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"        
-    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
     
     #Disable-LocalUser -Name "Administrator"
-    
-    #$title    = 'Restart Computer'
-    #$question = 'Do you want to run sysprep and restart this computer now?'
-    #$choices  = '&Yes', '&No'
-    
-    #$decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
-    #if ($decision -eq 0) {
-       # cd "$($env:SystemRoot)\system32\sysprep"
-       # .\sysprep.exe /unattend:"$($outputFolder)\Unattend.xml" /oobe /reboot
-        #shutdown -r -f -t 00
-    #}
+
 }
