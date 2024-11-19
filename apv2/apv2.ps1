@@ -1,4 +1,8 @@
-﻿$spTenant = "leegovfl.sharepoint.com"
+param (
+    [switch]$P
+)
+ 
+$spTenant = "leegovfl.sharepoint.com"
 $spSitePath = "/sites/InformationTechnology"
 $spLibrary = "apv2"
 $outputFolder = "c:\ITS"
@@ -54,11 +58,15 @@ if($driveId -ne ""){
 
 
 }
-$title    = 'Pre-Provision Computer'
-$question = 'Do you want to start the pre-provisioning process on this computer?'
-$choices  = '&Yes', '&No'
-$decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
-if ($decision -eq 0) {
+$decision = 0
+if(-not $P)
+{
+    $title    = 'Pre-Provision Computer'
+    $question = 'Do you want to start the pre-provisioning process on this computer?'
+    $choices  = '&Yes', '&No'
+    $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
+}
+if ($decision -eq 0 -or $P) {
 
     $dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
     if (-not (Test-Path $dest))
