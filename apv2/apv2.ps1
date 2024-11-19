@@ -58,22 +58,24 @@ if($driveId -ne ""){
 
 
 }
+#copy drivemappings file
+$dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
+if (-not (Test-Path $dest))
+{
+    mkdir $dest
+}
+Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
+    
 $decision = 0
 if(-not $P)
 {
     $title    = 'Pre-Provision Computer'
-    $question = 'Do you want to start the pre-provisioning process on this computer?'
+    $question = 'Do you want to start the provisioning process on this computer?'
     $choices  = '&Yes', '&No'
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
 }
 if ($decision -eq 0 -or $P) {
-
-    $dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
-    if (-not (Test-Path $dest))
-    {
-        mkdir $dest
-    }
-    Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
+    #provision computer
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
