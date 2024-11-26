@@ -7,9 +7,9 @@ $spSitePath = "/sites/InformationTechnology"
 $spLibrary = "apv2"
 $outputFolder = "c:\ITS"
 
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module Microsoft.Graph -Force
 #Import-Module Microsoft.Graph
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 #Install-Module Microsoft.Graph.Files -Force
 Import-Module Microsoft.Graph.Files
 
