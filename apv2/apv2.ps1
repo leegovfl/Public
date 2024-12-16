@@ -1,6 +1,5 @@
 param (
-    [switch]$P,
-    [switch]$F
+    [switch]$P
 )
  
 $spTenant = "leegovfl.sharepoint.com"
