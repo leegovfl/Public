@@ -1,5 +1,6 @@
 param (
     [switch]$P
+    [switch]$F
 )
  
 $spTenant = "leegovfl.sharepoint.com"
@@ -7,34 +8,36 @@ $spSitePath = "/sites/InformationTechnology"
 $spLibrary = "apv2"
 $outputFolder = "c:\ITS"
 
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-Install-Module Microsoft.Graph -Force
-#Import-Module Microsoft.Graph
-#Install-Module Microsoft.Graph.Files -Force
-Import-Module Microsoft.Graph.Files
-
-Connect-MgGraph
-
-# Create the folder
-if (-not (Test-Path $outputFolder))
+if(-not $F)
 {
-    New-Item -Path $outputFolder -ItemType Directory
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+    Install-Module Microsoft.Graph -Force
+    #Import-Module Microsoft.Graph
+    #Install-Module Microsoft.Graph.Files -Force
+    Import-Module Microsoft.Graph.Files
+    
+    Connect-MgGraph
+    
+    # Create the folder
+    if (-not (Test-Path $outputFolder))
+    {
+        New-Item -Path $outputFolder -ItemType Directory
+    }
+    
+    # Set permissions to allow only Administrators full access
+    $acl = Get-Acl $outputFolder
+    $acl.SetAccessRuleProtection($true, $false)
+    
+    # Remove inherited permissions
+    $acl.SetAccessRuleProtection($true, $false)
+    
+    # Add full control for Administrators
+    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Administrators", "FullControl", "Allow")
+    $acl.AddAccessRule($rule)
+    
+    # Set the ACL on the folder
+    Set-Acl $outputFolder $acl
 }
-
-# Set permissions to allow only Administrators full access
-$acl = Get-Acl $outputFolder
-$acl.SetAccessRuleProtection($true, $false)
-
-# Remove inherited permissions
-$acl.SetAccessRuleProtection($true, $false)
-
-# Add full control for Administrators
-$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Administrators", "FullControl", "Allow")
-$acl.AddAccessRule($rule)
-
-# Set the ACL on the folder
-Set-Acl $outputFolder $acl
-
 
 $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
 $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq 'apv2'"
