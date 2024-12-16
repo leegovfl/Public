@@ -15,9 +15,9 @@ if(-not $F)
     #Import-Module Microsoft.Graph
     #Install-Module Microsoft.Graph.Files -Force
     Import-Module Microsoft.Graph.Files
-    
-    Connect-MgGraph
 }
+Connect-MgGraph
+
 # Create the folder
 if (-not (Test-Path $outputFolder))
 {
