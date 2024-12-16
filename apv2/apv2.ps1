@@ -1,5 +1,6 @@
 param (
-    [switch]$P
+    [switch]$P,
+    [switch]$F
 )
  
 $spTenant = "leegovfl.sharepoint.com"
@@ -16,27 +17,27 @@ if(-not $F)
     Import-Module Microsoft.Graph.Files
     
     Connect-MgGraph
-    
-    # Create the folder
-    if (-not (Test-Path $outputFolder))
-    {
-        New-Item -Path $outputFolder -ItemType Directory
-    }
-    
-    # Set permissions to allow only Administrators full access
-    $acl = Get-Acl $outputFolder
-    $acl.SetAccessRuleProtection($true, $false)
-    
-    # Remove inherited permissions
-    $acl.SetAccessRuleProtection($true, $false)
-    
-    # Add full control for Administrators
-    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Administrators", "FullControl", "Allow")
-    $acl.AddAccessRule($rule)
-    
-    # Set the ACL on the folder
-    Set-Acl $outputFolder $acl
 }
+# Create the folder
+if (-not (Test-Path $outputFolder))
+{
+    New-Item -Path $outputFolder -ItemType Directory
+}
+
+# Set permissions to allow only Administrators full access
+$acl = Get-Acl $outputFolder
+$acl.SetAccessRuleProtection($true, $false)
+
+# Remove inherited permissions
+$acl.SetAccessRuleProtection($true, $false)
+
+# Add full control for Administrators
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Administrators", "FullControl", "Allow")
+$acl.AddAccessRule($rule)
+
+# Set the ACL on the folder
+Set-Acl $outputFolder $acl
+
 
 $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
 $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq 'apv2'"
