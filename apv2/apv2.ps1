@@ -1,5 +1,5 @@
 param (
-    [switch]$P
+    [switch]$P,
     [switch]$F
 )
  
