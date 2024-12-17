@@ -87,7 +87,5 @@ if ($decision -eq 0 -or $P) {
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
     powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
     #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"        
-    #shutdown /r /f /t 0
-    #Disable-LocalUser -Name "Administrator"
-
+    shutdown /r /f /t 0
 }
