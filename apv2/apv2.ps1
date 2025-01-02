@@ -16,7 +16,7 @@ if(-not $F)
     #Install-Module Microsoft.Graph.Files -Force
     Import-Module Microsoft.Graph.Files
 }
-Connect-MgGraph -Scopes "Device.Read.All", "DeviceManagementManagedDevices.Read.All","Sites.ReadWrite.All"
+Connect-MgGraph -Scopes "Device.ReadWrite.All", "DeviceManagementManagedDevices.ReadWrite.All","Sites.ReadWrite.All"
 
 # Create the folder
 if (-not (Test-Path $outputFolder))
