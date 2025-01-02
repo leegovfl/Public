@@ -88,13 +88,13 @@ if ($build.CurrentBuildNumber -ge 26100){
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+        #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
         
         $title    = 'Restart Computer'
         $question = 'Do you want to restart this computer (recommended)?'
         $choices  = '&Yes', '&No'
         $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 1)
-        if ($decisionR -eq 0) {
-            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
+        if ($decisionR -eq 0) {            
             shutdown /r /f /t 0
         }
     }
