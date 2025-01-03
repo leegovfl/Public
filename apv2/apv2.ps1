@@ -76,8 +76,10 @@ if ($build.CurrentBuildNumber -ge 22631){
     {
         $title    = 'Pre-Provision Computer'
         $question = 'Do you want to start the provisioning process on this computer?'
-        $choices  = '&Yes', '&No'
-        $decision = $Host.UI.PromptForChoice($title, $question, $choices, 1)
+        $choices  = '&Yes', '&No', '&Repeat the Question'
+        do {
+            $decision = $Host.UI.PromptForChoice($title, $question, $choices, 2)
+        } while ($decision -ne 0 -and $decision -ne 1)
     }
     if ($decision -eq 0 -or $P) {
         #provision computer
@@ -92,8 +94,10 @@ if ($build.CurrentBuildNumber -ge 22631){
         
         $title    = 'Restart Computer'
         $question = 'Do you want to restart this computer (recommended)?'
-        $choices  = '&Yes', '&No'
-        $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 1)
+        $choices  = '&Yes', '&No', '&Repeat the Question'
+        do {
+            $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 2)
+        } while ($decisionR -ne 0 -and $decisionR -ne 1)
         if ($decisionR -eq 0) {            
             shutdown /r /f /t 0
         }
