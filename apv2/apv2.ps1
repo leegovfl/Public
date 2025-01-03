@@ -3,8 +3,8 @@ param (
     [switch]$F
 )
 $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property CurrentBuildNumber,DisplayVersion
-write-host "Current Windows Version: $($build.DisplayVersion) ($($build.CurrentBuildNumber))" -ForegroundColor Cyan
-if ($build.CurrentBuildNumber -ge 26100){    
+write-host "Current Windows Version: $($build.DisplayVersion) build $($build.CurrentBuildNumber)" -ForegroundColor Cyan
+if ($build.CurrentBuildNumber -ge 22631){    
     $spTenant = "leegovfl.sharepoint.com"
     $spSitePath = "/sites/InformationTechnology"
     $spLibrary = "apv2"
@@ -101,5 +101,5 @@ if ($build.CurrentBuildNumber -ge 26100){
 
 }else {
 
-    write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 24H2."
+    write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 23H2 build 22631."
 }
