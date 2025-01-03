@@ -2,8 +2,8 @@ param (
     [switch]$P,
     [switch]$F
 )
-$build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property CurrentBuildNumber,ProductName,DisplayVersion
-write-host "Current Windows Version: $($build.ProductName) $($build.DisplayVersion)" -ForegroundColor Cyan
+$build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property CurrentBuildNumber,DisplayVersion
+write-host "Current Windows Version: $($build.DisplayVersion) ($($build.CurrentBuildNumber))" -ForegroundColor Cyan
 if ($build.CurrentBuildNumber -ge 26100){    
     $spTenant = "leegovfl.sharepoint.com"
     $spSitePath = "/sites/InformationTechnology"
