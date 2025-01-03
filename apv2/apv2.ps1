@@ -90,7 +90,8 @@ if ($build.CurrentBuildNumber -ge 22631){
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
         cd "$($env:SystemRoot)\system32\sysprep"
-        .\sysprep.exe /unattend:"c:\its\Unattend.xml" /oobe #/reboot
+        .\sysprep.exe /unattend:"$($outputFolder)\Unattend.xml" /oobe #/reboot
+        cd "$($env:SystemRoot)\system32"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
         #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
         
