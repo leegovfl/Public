@@ -88,7 +88,7 @@ if ($build.CurrentBuildNumber -ge 22631){
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
-        #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
+        powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
         
         $title    = 'Restart Computer'
         $question = 'Do you want to restart this computer (recommended)?'
