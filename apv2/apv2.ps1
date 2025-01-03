@@ -89,8 +89,10 @@ if ($build.CurrentBuildNumber -ge 22631){
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"    
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
+        cd "$($env:SystemRoot)\system32\sysprep"
+        .\sysprep.exe /unattend:"c:\its\Unattend.xml" /oobe #/reboot
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
-        powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
+        #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
         
         $title    = 'Restart Computer'
         $question = 'Do you want to restart this computer (recommended)?'
