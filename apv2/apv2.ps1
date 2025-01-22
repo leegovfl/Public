@@ -107,6 +107,9 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+
+            #write installed tag
+
             
             $title    = 'Restart Computer'
             $question = 'Do you want to restart this computer now (recommended)?'
