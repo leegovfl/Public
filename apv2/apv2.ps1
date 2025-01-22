@@ -87,7 +87,14 @@ if($hottogo){
             mkdir $dest
         }
         Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
-            
+        #copy oobe.xml
+        $dest = "$($env:windir)\System32\Oobe\Info"
+        if (-not (Test-Path $dest))
+        {
+            mkdir $dest
+        }
+        Copy-Item "$($outputFolder)\oobe.xml" -Destination $dest -Force  
+        
         $decision = 0
         if(-not $P)
         {
@@ -109,7 +116,12 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
             #write installed tag
-
+            # Create a tag file just so Intune knows this was installed
+            if (-not (Test-Path "$($env:ProgramData)\LeeCounty\PreProvision"))
+            {
+                Mkdir "$($env:ProgramData)\LeeCounty\PreProvision"
+            }
+            Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
             
             $title    = 'Restart Computer'
             $question = 'Do you want to restart this computer now (recommended)?'
