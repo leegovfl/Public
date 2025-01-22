@@ -19,9 +19,12 @@ if (Test-Path -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag
 }
 
 if($hottogo){
-    $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property CurrentBuildNumber,DisplayVersion
-    write-host "Current Windows Version: $($build.DisplayVersion) build $($build.CurrentBuildNumber)" -ForegroundColor Cyan
-    if ($build.CurrentBuildNumber -ge 22631){    
+    $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property DisplayVersion,CurrentBuildNumber,UBR
+    write-host "Current Windows Version: $($build.DisplayVersion) build $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
+    #min required: 22H2 22621.3374 or 23H2 22631.3374 or 24H2
+    if (($build.CurrentBuildNumber -eq 22621 -and $build.UBR -ge 3374) -or ($build.CurrentBuildNumber -eq 22631 -and $build.UBR -ge 3374) -or $build.CurrentBuildNumber -ge 26100)
+    {
+        if
         $spTenant = "leegovfl.sharepoint.com"
         $spSitePath = "/sites/InformationTechnology"
         $spLibrary = "apv2"
@@ -137,6 +140,6 @@ if($hottogo){
     
     }else {
     
-        write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 23H2 build 22631."
+        write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 22H2 22621.3374 or 23H2 22631.3374 or 24H2"
     }
 }
