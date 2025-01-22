@@ -91,12 +91,12 @@ if($hottogo){
         }
         Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
         #copy oobe.xml
-        $dest = "$($env:windir)\System32\Oobe\Info"
-        if (-not (Test-Path $dest))
-        {
-            mkdir $dest
-        }
-        Copy-Item "$($outputFolder)\oobe.xml" -Destination $dest -Force  
+        #$dest = "$($env:windir)\System32\Oobe\Info"
+        #if (-not (Test-Path $dest))
+        #{
+        #    mkdir $dest
+        #}
+        #Copy-Item "$($outputFolder)\oobe.xml" -Destination $dest -Force  
         
         $decision = 0
         if(-not $P)
