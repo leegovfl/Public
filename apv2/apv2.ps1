@@ -91,15 +91,15 @@ if ($build.CurrentBuildNumber -ge 22631){
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
         powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
         
-        $title    = 'Sysprep/Restart Computer'
-        $question = 'Do you want to run sysprep and restart this computer (recommended)?'
+        $title    = 'Restart Computer'
+        $question = 'Do you want to restart this computer now (recommended)?'
         $choices  = '&Yes', '&No', '&Repeat the Question'
         do {
             $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 2)
         } while ($decisionR -ne 0 -and $decisionR -ne 1)
         if ($decisionR -eq 0) {    
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
-            #shutdown /r /f /t 0
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
+            shutdown /r /f /t 0
         }
     }
 
