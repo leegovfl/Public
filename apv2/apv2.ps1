@@ -20,7 +20,7 @@ if (Test-Path -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag
 
 if($hottogo){
     $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property DisplayVersion,CurrentBuildNumber,UBR
-    write-host "Current Windows Version: $($build.DisplayVersion) build $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
+    write-host "Current Windows Version: $($build.DisplayVersion) $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
     #min required: 22H2 22621.3374 or 23H2 22631.3374 or 24H2
     if (($build.CurrentBuildNumber -eq 22621 -and $build.UBR -ge 3374) -or ($build.CurrentBuildNumber -eq 22631 -and $build.UBR -ge 3374) -or $build.CurrentBuildNumber -ge 26100)
     {
