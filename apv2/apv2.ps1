@@ -140,5 +140,18 @@ if($hottogo){
     }else {
     
         write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 22H2 22621.3374 or 23H2 22631.3374 or 24H2"
+        $title    = 'Update Windows'
+        $question = 'Do you want to run Winndows Update?'
+        $choices  = '&Yes', '&No', '&Repeat the Question'
+        do {
+            $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
+        } while ($decisionW -ne 0 -and $decisionW -ne 1)
+        if ($decisionW -eq 0) {    
+            Install-Module -Name PSWindowsUpdate -Force
+            Import-Module -Name PSWindowsUpdate
+            Get-WindowsUpdate -AcceptAll -Install -AutoReboot
+        }
+
+        
     }
 }
