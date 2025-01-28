@@ -83,12 +83,12 @@ if($hottogo){
         
         }
         #copy drivemappings file
-        $dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
-        if (-not (Test-Path $dest))
-        {
-            mkdir $dest
-        }
-        Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
+        #$dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
+        #if (-not (Test-Path $dest))
+        #{
+        #    mkdir $dest
+        #}
+        #Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
         #copy oobe.xml
         #$dest = "$($env:windir)\System32\Oobe\Info"
         #if (-not (Test-Path $dest))
@@ -114,7 +114,7 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv1.ps1"
             #powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"    
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\settingsV1.ps1"
+            powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
             #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
             #write installed tag
