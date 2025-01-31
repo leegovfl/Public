@@ -26,7 +26,7 @@ if($hottogo){
     {
         $spTenant = "leegovfl.sharepoint.com"
         $spSitePath = "/sites/InformationTechnology"
-        $spLibrary = "apv2"
+        $spLibrary = "apv2 - Library"
         $outputFolder = "c:\ITS"
         
         if(-not $F)
@@ -61,7 +61,7 @@ if($hottogo){
         
         
         $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
-        $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq 'apv2 - Library'"
+        $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq '$($spLibrary)'"
         $driveId = ""
         
         foreach ($spd in $spds.value)
