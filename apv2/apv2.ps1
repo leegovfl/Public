@@ -113,7 +113,7 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgroundsThemes.ps1"
+            powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
