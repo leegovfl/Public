@@ -26,7 +26,7 @@ if($hottogo){
     {
         $spTenant = "leegovfl.sharepoint.com"
         $spSitePath = "/sites/InformationTechnology"
-        $spLibrary = "apv2 - Library"
+        $spLibrary = "apv2"
         $outputFolder = "c:\ITS"
         
         if(-not $F)
@@ -61,7 +61,7 @@ if($hottogo){
         
         
         $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
-        $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq '$($spLibrary)'"
+        $spds = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($sps.id)/drives?$filter=name eq 'apv2 - Library'"
         $driveId = ""
         
         foreach ($spd in $spds.value)
@@ -113,13 +113,13 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"    
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackground.ps1"
+            powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\InstallBrowsers.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\desktopShortcuts.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_Autologon.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_UWF.ps1"
+            powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_Autologon_FirstLogon_Task.ps1"
+            powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_UWF_FirstLogon_Task.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_UWF_Tasks.ps1"
 
             #write installed tag
