@@ -109,13 +109,13 @@ if($hottogo){
         }
         if ($decision -eq 0 -or $P) {
             #provision computer
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
             #write installed tag
             # Create a tag file just so Intune knows this was installed
