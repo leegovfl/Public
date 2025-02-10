@@ -115,7 +115,7 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
             #write installed tag
             # Create a tag file just so Intune knows this was installed
