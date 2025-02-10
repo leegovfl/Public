@@ -125,10 +125,10 @@ if($hottogo){
             }
             Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
             
-            #$title    = 'Restart Computer'
-            #$question = 'Do you want to restart this computer now (recommended)?'
-            $title    = 'Provision Computer'
-            $question = 'Do you want to continue provisioning this computer?'
+            $title    = 'Restart Computer'
+            $question = 'Do you want to restart this computer now (recommended)?'
+            #$title    = 'Provision Computer'
+            #$question = 'Do you want to continue provisioning this computer?'
             $choices  = '&Yes', '&No', '&Repeat the Question'
             do {
                 $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 2)
