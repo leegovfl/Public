@@ -115,7 +115,7 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
-            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+            powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
 
             #write installed tag
             # Create a tag file just so Intune knows this was installed
@@ -126,7 +126,7 @@ if($hottogo){
             Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
 
             Write-Host "Close this window and click next to continue provisioning." -ForegroundColor Yellow
-            exit 1641
+            #exit 1641
             #$title    = 'Restart Computer'
             #$question = 'Do you want to restart this computer now (recommended)?'
             #$title    = 'Provision Computer'
