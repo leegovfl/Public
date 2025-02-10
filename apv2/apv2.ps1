@@ -136,7 +136,8 @@ if($hottogo){
             if ($decisionR -eq 0) {    
                 #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
                 shutdown /g /f /t 0
-                #Exit 1641
+                #exit 1641
+                #exit
             }
         }
     
