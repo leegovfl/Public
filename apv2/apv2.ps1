@@ -126,6 +126,7 @@ if($hottogo){
             Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
 
             Write-Host "Close this window and click next to continue provisioning." -ForegroundColor Yellow
+            exit 1641
             #$title    = 'Restart Computer'
             #$question = 'Do you want to restart this computer now (recommended)?'
             #$title    = 'Provision Computer'
