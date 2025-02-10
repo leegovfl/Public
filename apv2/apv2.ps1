@@ -125,15 +125,18 @@ if($hottogo){
             }
             Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
             
-            $title    = 'Restart Computer'
-            $question = 'Do you want to restart this computer now (recommended)?'
+            #$title    = 'Restart Computer'
+            #$question = 'Do you want to restart this computer now (recommended)?'
+            $title    = 'Provision Computer'
+            $question = 'Do you want to continue provisioning this computer?'
             $choices  = '&Yes', '&No', '&Repeat the Question'
             do {
                 $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 2)
             } while ($decisionR -ne 0 -and $decisionR -ne 1)
             if ($decisionR -eq 0) {    
                 #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
-                shutdown /r /f /t 0
+                #shutdown /r /f /t 0
+                Exit 1641
             }
         }
     
