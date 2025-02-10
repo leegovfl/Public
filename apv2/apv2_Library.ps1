@@ -116,11 +116,11 @@ if($hottogo){
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackground.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
             powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\InstallBrowsers.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\desktopShortcuts.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\InstallBrowsers.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\desktopShortcuts.ps1"
             #powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_Autologon_FirstLogon_Task.ps1"
             #powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_UWF_FirstLogon_Task.ps1"
-            powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_UWF_Tasks.ps1"
+            #powershell.exe -executionpolicy bypass -file "$($outputFolder)\Configure_UWF_Tasks.ps1"
 
             #write installed tag
             # Create a tag file just so Intune knows this was installed
