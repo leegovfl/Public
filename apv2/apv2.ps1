@@ -89,6 +89,14 @@ if($hottogo){
             mkdir $dest
         }
         Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
+        
+        $dest = "$($env:ProgramData)\LeeCounty\renamePC"
+        if (-not (Test-Path $dest))
+        {
+            mkdir $dest
+        }
+        Copy-Item "$($outputFolder)\Post-APV2-Reboot.ps1" -Destination $dest -Force  
+        Copy-Item "$($outputFolder)\Post-APV2-Reboot-Notification.ps1" -Destination $dest -Force  
         #copy oobe.xml
         #$dest = "$($env:windir)\System32\Oobe\Info"
         #if (-not (Test-Path $dest))
