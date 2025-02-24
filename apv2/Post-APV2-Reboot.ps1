@@ -11,7 +11,7 @@ Start-Sleep -Seconds 21
 
 disable-scheduledtask -taskname Post-APV2-Reboot -ErrorAction SilentlyContinue -Verbose
 #Unregister-ScheduledTask -TaskName PostESP-Reboot -Confirm:$false
-disable-scheduledtask -taskname Post-APV2-Notificationn -Erroraction Continue -Verbose
+disable-scheduledtask -taskname Post-APV2-Notificationn -Erroraction SilentlyContinue -Verbose
 #Unregister-ScheduledTask -TaskName PostESP-Reboot-Notification -Confirm:$false
 
 
