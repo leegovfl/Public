@@ -134,7 +134,7 @@ if($hottogo){
             Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
             
             Write-Host "*******************************************************************************************" -ForegroundColor Cyan
-            Write-Host "* Pre-Provisioning Complete. Close this window and click next to continue." -ForegroundColor Cyan
+            Write-Host "* Pre-Provisioning Complete. Close this window to continue provisioning this device." -ForegroundColor Cyan
             Write-Host "*******************************************************************************************" -ForegroundColor Cyan
 
             #exit 1641
