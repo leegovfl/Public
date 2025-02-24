@@ -109,7 +109,7 @@ if($hottogo){
         if(-not $P)
         {
             $title    = 'Pre-Provision Computer'
-            $question = 'Do you want to start the provisioning process on this computer?'
+            $question = 'Do you want to start the pre-provisioning process on this computer?'
             $choices  = '&Yes', '&No', '&Repeat the Question'
             do {
                 $decision = $Host.UI.PromptForChoice($title, $question, $choices, 2)
