@@ -31,7 +31,7 @@ if($hottogo){
         
         if(-not $F)
         {
-            write-host "Installing Libraries" -ForegroundColor Yellow
+            write-host "Installing libraries..." -ForegroundColor Yellow
             Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
             Install-Module Microsoft.Graph -Force
             #Import-Module Microsoft.Graph
@@ -56,7 +56,7 @@ if($hottogo){
         }
         if ($decision -eq 0 -or $P) {
             Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All"
-             write-host "Downloading ITS files" -ForegroundColor Yellow
+             write-host "Downloading ITS files..." -ForegroundColor Yellow
             # Create the folder
             if (-not (Test-Path $outputFolder))
             {
