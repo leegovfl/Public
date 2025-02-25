@@ -56,7 +56,7 @@ if($hottogo){
         }
         if ($decision -eq 0 -or $P) {
             Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All"
-            
+             write-host "Downloading ITS files" -ForegroundColor Yellow
             # Create the folder
             if (-not (Test-Path $outputFolder))
             {
