@@ -32,6 +32,7 @@ if($hottogo){
         if(-not $F)
         {
             write-host "Installing libraries..." -ForegroundColor Magenta
+            Set-ExecutionPolicy Unrestricted
             Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
             Install-Module Microsoft.Graph -Force
             #Import-Module Microsoft.Graph
