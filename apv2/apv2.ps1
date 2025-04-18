@@ -90,18 +90,39 @@ if($hottogo){
                     $driveId = $spd.id
                 }
             }
+            function getFiles {
+              param(
+                [string]$folderId,
+                [string]$folderPath
+              )
             
-            if($driveId -ne ""){
+                    $spfileurl = "https://graph.microsoft.com/v1.0/drives/$($driveId)/root/children"
             
-                $dis = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/drives/$($driveid)/root/children"
-            
-                foreach ($di in $dis.value)
-                {
-                    Get-MgDriveItemContent -DriveId $driveId -DriveItemId $di.id -OutFile "$($outputFolder)\$($di.name)"
-                }
-            
-            
+                    if($folderId -ne ""){
+                        $spfileurl = "https://graph.microsoft.com/v1.0/drives/$($driveId)/items/$($folderId)/children"
+                    }
+                        
+                    [array]$dis = Invoke-MgGraphRequest -Method GET -Uri $spfileurl
+        
+                    $Folders = $dis.Value | ? {$_.Folder.ChildCount -gt 0 }
+                    $Files = $dis.Value | ? {$_.Folder.ChildCount -eq $Null}
+                    #$Files
+                    foreach ($di in $Files)
+                    {        
+                        Get-MgDriveItemContent -DriveId $driveId -DriveItemId $di.id -OutFile "$($outputFolder)\$($folderPath)$($di.name)"
+                    }
+                    foreach ($di in $Folders)
+                    {
+                        $nfolderPath = $folderPath + $di.name  + "\"
+                        getFiles -folderId $di.id -folderPath $nfolderPath
+                    }
+                    
+              
+             }
+            if($driveId -ne ""){            
+                getFiles
             }
+            
             #copy drivemappings file
             $dest = "$($env:ProgramData)\LeeCounty\DriveMapping"
             if (-not (Test-Path $dest))
@@ -130,6 +151,7 @@ if($hottogo){
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1"
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
+                powershell.exe -executionpolicy bypass -file "$($outputFolder)\absolute.ps1"
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\pdqconnect.ps1"
