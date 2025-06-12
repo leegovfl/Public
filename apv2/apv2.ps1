@@ -34,6 +34,8 @@ if($hottogo){
             write-host "Installing libraries..." -ForegroundColor Magenta
             #Set-ExecutionPolicy Unrestricted
             Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+            Install-Module msal.ps -Force
+            Import-Module msal.ps
             Install-Module Microsoft.Graph -Force
             #Import-Module Microsoft.Graph
             #Install-Module Microsoft.Graph.Files -Force
