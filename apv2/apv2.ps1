@@ -25,8 +25,8 @@ if($hottogo){
     if (($build.CurrentBuildNumber -eq 22621 -and $build.UBR -ge 3374) -or ($build.CurrentBuildNumber -eq 22631 -and $build.UBR -ge 3374) -or $build.CurrentBuildNumber -ge 26100)
     {
         $spTenant = "leegovfl.sharepoint.com"
-        $spSitePath = "/sites/InformationTechnology"
-        $spLibrary = "apv2"
+        $spSitePath = "/sites/ProvConn"
+        $spLibrary = "APV2"
         $outputFolder = "c:\ITS"
         
         if(-not $F)
