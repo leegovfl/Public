@@ -152,7 +152,7 @@ if($hottogo){
             {
                 #provision computer
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\DellCommandConfigure.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1"
+                powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1" -P
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
                 powershell.exe -executionpolicy bypass -file "$($outputFolder)\absolute.ps1"
