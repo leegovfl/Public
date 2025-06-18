@@ -60,7 +60,7 @@ if($hottogo){
         if ($decision -eq 0 -or $P) {
             Write-Host "Set Timezone" -ForegroundColor Yellow
             Set-TimeZone -Id "Eastern Standard Time"
-            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All"
+            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
              write-host "Downloading ITS files..." -ForegroundColor Magenta
             # Create the folder
             if (-not (Test-Path $outputFolder))
