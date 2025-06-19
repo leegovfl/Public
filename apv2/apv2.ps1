@@ -19,9 +19,10 @@ if (Test-Path -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag
 }
 
 if($hottogo){
-    $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property DisplayVersion,CurrentBuildNumber,UBR
-    write-host "Current Windows Version: $($build.DisplayVersion) $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
+    $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property DisplayVersion,CurrentBuildNumber,UBR,EditionID,ProductName
+    write-host "Current Windows Version: $($build.EditionID) $($build.DisplayVersion) $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
     #min required: 22H2 22621.3374 or 23H2 22631.3374 or 24H2
+    if($build.EditionID -eq "Enterprise") {
     if (($build.CurrentBuildNumber -eq 22621 -and $build.UBR -ge 3374) -or ($build.CurrentBuildNumber -eq 22631 -and $build.UBR -ge 3374) -or $build.CurrentBuildNumber -ge 26100)
     {
         $spTenant = "leegovfl.sharepoint.com"
@@ -207,6 +208,24 @@ if($hottogo){
             Get-WindowsUpdate -AcceptAll -Install -AutoReboot
         }
 
+        
+    }
+    }else {
+         write-host "Windows Enterprise is required for Autopilot V2"
+        $title    = 'Upgrade Windows to Enterprise'
+        $question = 'Do you want to run Winndows Upgrade?'
+        $choices  = '&Yes', '&No', '&Repeat the Question'
+        do {
+            $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
+        } while ($decisionW -ne 0 -and $decisionW -ne 1)
+        if ($decisionW -eq 0) {    
+            $sls = Get-WmiObject -Query 'SELECT * FROM SoftwareLicensingService' 
+            @($sls).foreach({
+                $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
+                $_.RefreshLicenseStatus()
+            })
+            systemreset
+        }
         
     }
 }
