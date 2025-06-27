@@ -224,6 +224,7 @@ if($hottogo){
                 $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
                 $_.RefreshLicenseStatus()
             })
+            cd "\windows\system32\sysprep"
             sysprep /oobe /reboot
         }
         
