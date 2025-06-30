@@ -209,7 +209,9 @@ if($hottogo){
         if ($decisionW -eq 0) {    
             Install-Module -Name PSWindowsUpdate -Force
             Import-Module -Name PSWindowsUpdate
-            Get-WindowsUpdate -AcceptAll -Install -AutoReboot
+            Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
+            cd "\windows\system32\sysprep"
+            sysprep /oobe /reboot
         }
 
         
