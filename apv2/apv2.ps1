@@ -59,10 +59,10 @@ if($hottogo){
             } while ($decision -ne 0 -and $decision -ne 1)
         }
         if ($decision -eq 0 -or $P) {
-            Write-Host "Set Timezone" -ForegroundColor Yellow
-            Set-TimeZone -Id "Eastern Standard Time"
             Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
             if (Get-MgContext) {
+                Write-Host "Set Timezone" -ForegroundColor Yellow
+                Set-TimeZone -Id "Eastern Standard Time"
              write-host "Downloading ITS files..." -ForegroundColor Magenta
             # Create the folder
             if (-not (Test-Path $outputFolder))
