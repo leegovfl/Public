@@ -210,7 +210,7 @@ if($hottogo){
             Install-Module -Name PSWindowsUpdate -Force
             Import-Module -Name PSWindowsUpdate
             Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
-            cd "\windows\system32\sysprep"
+            cd "$($env:windir)\system32\sysprep"
             sysprep /oobe /reboot
         }
 
@@ -230,7 +230,7 @@ if($hottogo){
                 $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
                 $_.RefreshLicenseStatus()
             })
-            cd "\windows\system32\sysprep"
+            cd "$($env:windir)\system32\sysprep"
             sysprep /oobe /reboot
         }
         
