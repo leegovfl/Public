@@ -153,29 +153,47 @@ if($hottogo){
             if(-not $F)
             {
                 #provision computer
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\DellCommandConfigure.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1" -P
-                #powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\absolute.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\pdqconnect.ps1"
-                powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
-                #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
-    
-                #write installed tag
-                # Create a tag file just so Intune knows this was installed
-                if (-not (Test-Path "$($env:ProgramData)\LeeCounty\PreProvision"))
+                $curLoc = Get-Location
+                Set-Location $outputFolder
+                $global:registeredRan = $false
+                .\DellCommandConfigure.ps1
+                .\registerDevice.ps1 -P
+                if($global:registeredRan)
                 {
-                    Mkdir "$($env:ProgramData)\LeeCounty\PreProvision"
-                }
-                Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
-                
-                Write-Host "*******************************************************************************************" -ForegroundColor Cyan
-                Write-Host "* Pre-Provisioning Complete. Close this window to continue provisioning this device." -ForegroundColor Cyan
-                Write-Host "*******************************************************************************************" -ForegroundColor Cyan
+                    .\add2apv2.ps1
+                    .\absolute.ps1
+                    .\drivemappingscheduler.ps1
+                    .\addBackgrounds.ps1
+                    .\pdqconnect.ps1
+                    .\settings.ps1
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\DellCommandConfigure.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1" -P
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\absolute.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\pdqconnect.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
     
+    
+                    
+                    #write installed tag
+                    # Create a tag file just so Intune knows this was installed
+                    if (-not (Test-Path "$($env:ProgramData)\LeeCounty\PreProvision"))
+                    {
+                        Mkdir "$($env:ProgramData)\LeeCounty\PreProvision"
+                    }
+                    Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
+                    
+                    Write-Host "*******************************************************************************************" -ForegroundColor Cyan
+                    Write-Host "* Pre-Provisioning Complete. Close this window to continue provisioning this device." -ForegroundColor Cyan
+                    Write-Host "*******************************************************************************************" -ForegroundColor Cyan
+                }else{
+                    Write-Host "Script Canceled" -ForegroundColor Red
+                }
+                Set-Location $curLoc
                 #exit 1641
                 #$title    = 'Restart Computer'
                 #$question = 'Do you want to restart this computer now (recommended)?'
@@ -211,7 +229,7 @@ if($hottogo){
             Import-Module -Name PSWindowsUpdate
             Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
             cd "$($env:windir)\system32\sysprep"
-            sysprep /oobe /reboot
+            .\sysprep /oobe /reboot
         }
 
         
@@ -231,7 +249,7 @@ if($hottogo){
                 $_.RefreshLicenseStatus()
             })
             cd "$($env:windir)\system32\sysprep"
-            sysprep /oobe /reboot
+            .\sysprep /oobe /reboot
         }
         
     }
