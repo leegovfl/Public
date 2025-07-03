@@ -28,7 +28,7 @@ if($hottogo){
         $spTenant = "leegovfl.sharepoint.com"
         $spSitePath = "/sites/ProvConn"
         $spLibrary = "APV2"
-        $outputFolder = "c:\ITS"
+        $global:outputFolder = "c:\apv2"
         
         if(-not $F)
         {
@@ -65,24 +65,21 @@ if($hottogo){
                 Set-TimeZone -Id "Eastern Standard Time"
              write-host "Downloading ITS files..." -ForegroundColor Magenta
             # Create the folder
-            if (-not (Test-Path $outputFolder))
+            if (-not (Test-Path $global:outputFolder))
             {
-                New-Item -Path $outputFolder -ItemType Directory
+                New-Item -Path $global:outputFolder -ItemType Directory
             }
             
             # Set permissions to allow only Administrators full access
-            $acl = Get-Acl $outputFolder
-            $acl.SetAccessRuleProtection($true, $false)
-            
+            #$acl = Get-Acl $global:outputFolder
+            #$acl.SetAccessRuleProtection($true, $false)
             # Remove inherited permissions
-            $acl.SetAccessRuleProtection($true, $false)
-            
+            #$acl.SetAccessRuleProtection($true, $false)
             # Add full control for Administrators
-            $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Administrators", "FullControl", "Allow")
-            $acl.AddAccessRule($rule)
-            
+            #$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Administrators", "FullControl", "Allow")
+            #$acl.AddAccessRule($rule)
             # Set the ACL on the folder
-            Set-Acl $outputFolder $acl
+            #Set-Acl $global:outputFolder $acl
             
             
             $sps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/sites/$($spTenant):/$($spSitePath)"
@@ -114,7 +111,7 @@ if($hottogo){
                     #$Files
                     foreach ($di in $Files)
                     {        
-                        Get-MgDriveItemContent -DriveId $driveId -DriveItemId $di.id -OutFile "$($outputFolder)\$($folderPath)$($di.name)"
+                        Get-MgDriveItemContent -DriveId $driveId -DriveItemId $di.id -OutFile "$($global:outputFolder)\$($folderPath)$($di.name)"
                     }
                     foreach ($di in $Folders)
                     {
@@ -134,27 +131,27 @@ if($hottogo){
             {
                 mkdir $dest
             }
-            Copy-Item "$($outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
+            Copy-Item "$($global:outputFolder)\DriveMappings.ps1" -Destination $dest -Force  
         
             #$dest = "$($env:ProgramData)\LeeCounty\renamePC"
             #if (-not (Test-Path $dest))
             #{
             #    mkdir $dest
             #}
-            #Copy-Item "$($outputFolder)\Post-APV2-Reboot.ps1" -Destination $dest -Force  
-            #Copy-Item "$($outputFolder)\Post-APV2-Reboot-Notification.ps1" -Destination $dest -Force  
+            #Copy-Item "$($global:outputFolder)\Post-APV2-Reboot.ps1" -Destination $dest -Force  
+            #Copy-Item "$($global:outputFolder)\Post-APV2-Reboot-Notification.ps1" -Destination $dest -Force  
             #copy oobe.xml
             #$dest = "$($env:windir)\System32\Oobe\Info"
             #if (-not (Test-Path $dest))
             #{
             #    mkdir $dest
             #}
-            #Copy-Item "$($outputFolder)\oobe.xml" -Destination $dest -Force  
+            #Copy-Item "$($global:outputFolder)\oobe.xml" -Destination $dest -Force  
             if(-not $F)
             {
                 #provision computer
                 $curLoc = Get-Location
-                Set-Location $outputFolder
+                Set-Location $global:outputFolder
                 $global:registeredRan = $false
                 .\DellCommandConfigure.ps1
                 .\registerDevice.ps1 -P
@@ -166,19 +163,19 @@ if($hottogo){
                     .\addBackgrounds.ps1
                     .\pdqconnect.ps1
                     .\settings.ps1
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\DellCommandConfigure.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\registerDevice.ps1" -P
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\pro2ent.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\add2apv2.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\absolute.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\drivemappingscheduler.ps1"            
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\addBackgrounds.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\pdqconnect.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\settings.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\renamePC.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\DellCommandConfigure.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\registerDevice.ps1" -P
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pro2ent.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\add2apv2.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\absolute.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\drivemappingscheduler.ps1"            
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\addBackgrounds.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pdqconnect.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\settings.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\renamePC.ps1"
     
-    
-                    
+                    Set-Location $curLoc
+                    Remove-Item -Path $global:outputFolder -Recurse -Force
                     #write installed tag
                     # Create a tag file just so Intune knows this was installed
                     if (-not (Test-Path "$($env:ProgramData)\LeeCounty\PreProvision"))
@@ -188,7 +185,8 @@ if($hottogo){
                     Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
                     
                     Write-Host "*******************************************************************************************" -ForegroundColor Cyan
-                    Write-Host "* Pre-Provisioning Complete. Close this window to continue provisioning this device." -ForegroundColor Cyan
+                    Write-Host "* Pre-Provisioning Complete. Before continuing, check above for any errors." -ForegroundColor Cyan
+                    Write-Host "* If no errors, close this window to continue provisioning this device." -ForegroundColor Cyan
                     Write-Host "*******************************************************************************************" -ForegroundColor Cyan
                 }else{
                     Write-Host "Script Canceled" -ForegroundColor Red
@@ -204,7 +202,7 @@ if($hottogo){
                 #    $decisionR = $Host.UI.PromptForChoice($title, $question, $choices, 2)
                 #} while ($decisionR -ne 0 -and $decisionR -ne 1)
                 #if ($decisionR -eq 0) {    
-                    #powershell.exe -executionpolicy bypass -file "$($outputFolder)\sysprep.ps1"
+                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\sysprep.ps1"
                     #shutdown /g /f /t 0
                     #exit 1641
                     #exit
