@@ -162,7 +162,8 @@ if($hottogo){
                     .\drivemappingscheduler.ps1
                     .\addBackgrounds.ps1
                     .\pdqconnect.ps1
-                    .\settings.ps1
+                    .\Win11Debloat.ps1
+                    .\settings2.ps1
                     #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\DellCommandConfigure.ps1"
                     #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\registerDevice.ps1" -P
                     #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pro2ent.ps1"
