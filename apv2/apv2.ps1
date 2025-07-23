@@ -153,7 +153,7 @@ if($hottogo){
                 $curLoc = Get-Location
                 Set-Location $global:outputFolder
                 $global:registeredRan = $false
-                .\DellCommandConfigure.ps1
+                #.\DellCommandConfigure.ps1
                 .\registerDevice.ps1 -P
                 if($global:registeredRan)
                 {
