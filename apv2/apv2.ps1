@@ -19,6 +19,21 @@ if (Test-Path -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag
 }
 
 if($hottogo){
+    if(-not $F)
+    {
+        write-host "Installing libraries..." -ForegroundColor Magenta
+        #Set-ExecutionPolicy Unrestricted
+        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+        Install-Module msal.ps -Force
+        Import-Module msal.ps
+        Install-Module Microsoft.Graph -Force
+        #Import-Module Microsoft.Graph
+        #Install-Module Microsoft.Graph.Files -Force
+        Import-Module Microsoft.Graph.Files
+        Install-Module WindowsAutoPilotIntune -Force
+        Import-Module WindowsAutoPilotIntune
+    }
+
     $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property DisplayVersion,CurrentBuildNumber,UBR,EditionID,ProductName
     write-host "Current Windows Version: $($build.EditionID) $($build.DisplayVersion) $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
     #min required: 22H2 22621.3374 or 23H2 22631.3374 or 24H2
@@ -30,20 +45,6 @@ if($hottogo){
         $spLibrary = "APV2"
         $global:outputFolder = "c:\apv2"
         
-        if(-not $F)
-        {
-            write-host "Installing libraries..." -ForegroundColor Magenta
-            #Set-ExecutionPolicy Unrestricted
-            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-            Install-Module msal.ps -Force
-            Import-Module msal.ps
-            Install-Module Microsoft.Graph -Force
-            #Import-Module Microsoft.Graph
-            #Install-Module Microsoft.Graph.Files -Force
-            Import-Module Microsoft.Graph.Files
-            Install-Module WindowsAutoPilotIntune -Force
-            Import-Module WindowsAutoPilotIntune
-        }
         $decision = 0
         $title    = 'Download Files'
         $question = 'Do you want to start downloading files on this computer?'
@@ -266,6 +267,28 @@ if($hottogo){
         
     }
     }else {
+    
+        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+        if($apv1.id)
+        {
+            Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+            Remove-AutopilotDevice -id $apv1.id
+            $dereged = $false
+            $deregct = 0
+            while($dereged -eq $false -And $deregct -lt 60 )
+            {
+                Start-Sleep -Seconds 5
+                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                if($apv1.id)
+                {
+                    Write-Host "Wating for device to deregister..."
+                    $deregct = $deregct + 1
+                }else
+                {
+                    $dereged = $true
+                }
+            }
+        }
         #.\add2apv2.ps1
          write-host "Windows Enterprise is required for Autopilot V2"
         $title    = 'Upgrade Windows to Enterprise'
@@ -287,5 +310,6 @@ if($hottogo){
         
     }
 }
+
 
 
