@@ -247,7 +247,28 @@ if($hottogo){
         }
     
     }else {
-    
+         $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+        if($apv1.id)
+        {
+            Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+            Remove-AutopilotDevice -id $apv1.id
+            $dereged = $false
+            $deregct = 0
+            while($dereged -eq $false -And $deregct -lt 60 )
+            {
+                Start-Sleep -Seconds 5
+                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                if($apv1.id)
+                {
+                    Write-Host "Wating for device to deregister..."
+                    $deregct = $deregct + 1
+                }else
+                {
+                    $dereged = $true
+                }
+            }
+        }
+        
         write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 22H2 22621.3374 or 23H2 22631.3374 or 24H2"
         $title    = 'Update Windows'
         $question = 'Do you want to run Winndows Update?'
@@ -310,6 +331,7 @@ if($hottogo){
         
     }
 }
+
 
 
 
