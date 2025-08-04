@@ -3,6 +3,12 @@ param (
     [switch]$F
 )
 $hottogo = $false
+$computerSystem = Get-WmiObject -Class Win32_ComputerSystem
+$bios = Get-WmiObject -Class Win32_BIOS
+
+$serialNumber = $bios.SerialNumber
+$manufacturer = $computerSystem.Manufacturer
+$model = $computerSystem.Model
 
 if (Test-Path -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag") {    
     $title    = 'Re-run Script'
@@ -247,28 +253,6 @@ if($hottogo){
         }
     
     }else {
-         $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
-        if($apv1.id)
-        {
-            Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-            Remove-AutopilotDevice -id $apv1.id
-            $dereged = $false
-            $deregct = 0
-            while($dereged -eq $false -And $deregct -lt 60 )
-            {
-                Start-Sleep -Seconds 5
-                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                if($apv1.id)
-                {
-                    Write-Host "Wating for device to deregister..."
-                    $deregct = $deregct + 1
-                }else
-                {
-                    $dereged = $true
-                }
-            }
-        }
-        
         write-host "This version of Windows is not compatible with Autopilot V2. Please update to at least Windows 11 22H2 22621.3374 or 23H2 22631.3374 or 24H2"
         $title    = 'Update Windows'
         $question = 'Do you want to run Winndows Update?'
@@ -277,6 +261,30 @@ if($hottogo){
             $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
         } while ($decisionW -ne 0 -and $decisionW -ne 1)
         if ($decisionW -eq 0) {    
+            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
+            if (Get-MgContext) {
+            $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+            if($apv1.id)
+            {
+                Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+                Remove-AutopilotDevice -id $apv1.id
+                $dereged = $false
+                $deregct = 0
+                while($dereged -eq $false -And $deregct -lt 60 )
+                {
+                    Start-Sleep -Seconds 5
+                    $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                    if($apv1.id)
+                    {
+                        Write-Host "Wating for device to deregister..."
+                        $deregct = $deregct + 1
+                    }else
+                    {
+                        $dereged = $true
+                    }
+                }
+            }
+            
             Install-Module -Name PSWindowsUpdate -Force
             Import-Module -Name PSWindowsUpdate
             Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
@@ -288,37 +296,38 @@ if($hottogo){
         
     }
     }else {
-    
-        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
-        if($apv1.id)
-        {
-            Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-            Remove-AutopilotDevice -id $apv1.id
-            $dereged = $false
-            $deregct = 0
-            while($dereged -eq $false -And $deregct -lt 60 )
-            {
-                Start-Sleep -Seconds 5
-                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                if($apv1.id)
-                {
-                    Write-Host "Wating for device to deregister..."
-                    $deregct = $deregct + 1
-                }else
-                {
-                    $dereged = $true
-                }
-            }
-        }
-        #.\add2apv2.ps1
-         write-host "Windows Enterprise is required for Autopilot V2"
+        write-host "Windows Enterprise is required for Autopilot V2"
         $title    = 'Upgrade Windows to Enterprise'
         $question = 'Do you want to run Winndows Upgrade?'
         $choices  = '&Yes', '&No', '&Repeat the Question'
         do {
             $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
         } while ($decisionW -ne 0 -and $decisionW -ne 1)
-        if ($decisionW -eq 0) {    
+        if ($decisionW -eq 0) {  
+            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
+            if (Get-MgContext) {
+            $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+            if($apv1.id)
+            {
+                Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+                Remove-AutopilotDevice -id $apv1.id
+                $dereged = $false
+                $deregct = 0
+                while($dereged -eq $false -And $deregct -lt 60 )
+                {
+                    Start-Sleep -Seconds 5
+                    $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                    if($apv1.id)
+                    {
+                        Write-Host "Wating for device to deregister..."
+                        $deregct = $deregct + 1
+                    }else
+                    {
+                        $dereged = $true
+                    }
+                }
+            }
+  
             $sls = Get-WmiObject -Query 'SELECT * FROM SoftwareLicensingService' 
             @($sls).foreach({
                 $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
@@ -331,6 +340,7 @@ if($hottogo){
         
     }
 }
+
 
 
 
