@@ -157,13 +157,14 @@ if($hottogo){
                 .\registerDevice.ps1 -P
                 if($global:registeredRan)
                 {
-                    .\add2apv2.ps1
+                    
                     .\absolute.ps1
                     .\drivemappingscheduler.ps1
                     .\addBackgrounds.ps1
                     .\pdqconnect.ps1
                     #.\Win11Debloat.ps1
                     .\settings.ps1
+                    .\add2apv2.ps1
                     #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\DellCommandConfigure.ps1"
                     #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\registerDevice.ps1" -P
                     #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pro2ent.ps1"
@@ -187,8 +188,20 @@ if($hottogo){
                     
                     Write-Host "*******************************************************************************************" -ForegroundColor Cyan
                     Write-Host "* Pre-Provisioning Complete. Before continuing, check above for any errors." -ForegroundColor Cyan
-                    Write-Host "* If no errors, close this window to continue provisioning this device." -ForegroundColor Cyan
+                    Write-Host "* If no errors, select Yes below to restart and continue provisioning this device." -ForegroundColor Cyan
                     Write-Host "*******************************************************************************************" -ForegroundColor Cyan
+                   
+                    $title    = 'Restart Device'
+                    $question = 'Are you ready to restart this Device?'
+                    $choices  = '&Yes', '&No', '&Repeat the Question'
+                    do {
+                        $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
+                    } while ($decisionW -ne 0 -and $decisionW -ne 1)
+                    if ($decisionW -eq 0) {    
+                        cd "$($env:windir)\system32\sysprep"
+                        .\sysprep /oobe /reboot
+                    }
+
                 }else{
                     Write-Host "Script Canceled" -ForegroundColor Red
                 }
@@ -234,6 +247,7 @@ if($hottogo){
         
     }
     }else {
+        #.\add2apv2.ps1
          write-host "Windows Enterprise is required for Autopilot V2"
         $title    = 'Upgrade Windows to Enterprise'
         $question = 'Do you want to run Winndows Upgrade?'
@@ -253,3 +267,4 @@ if($hottogo){
         
     }
 }
+
