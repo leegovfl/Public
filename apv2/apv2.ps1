@@ -41,6 +41,8 @@ if($hottogo){
             #Import-Module Microsoft.Graph
             #Install-Module Microsoft.Graph.Files -Force
             Import-Module Microsoft.Graph.Files
+            Install-Module WindowsAutoPilotIntune -Force
+            Import-Module WindowsAutoPilotIntune
         }
         $decision = 0
         $title    = 'Download Files'
@@ -149,63 +151,79 @@ if($hottogo){
             #Copy-Item "$($global:outputFolder)\oobe.xml" -Destination $dest -Force  
             if(-not $F)
             {
-                #provision computer
-                $curLoc = Get-Location
-                Set-Location $global:outputFolder
-                $global:registeredRan = $false
-                #.\DellCommandConfigure.ps1
-                .\registerDevice.ps1 -P
-                if($global:registeredRan)
+                # Check if APV1
+                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+                if($apv1.id)
                 {
-                    
-                    .\absolute.ps1
-                    .\drivemappingscheduler.ps1
-                    .\addBackgrounds.ps1
-                    .\pdqconnect.ps1
-                    #.\Win11Debloat.ps1
-                    .\settings.ps1
-                    .\add2apv2.ps1
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\DellCommandConfigure.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\registerDevice.ps1" -P
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pro2ent.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\add2apv2.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\absolute.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\drivemappingscheduler.ps1"            
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\addBackgrounds.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pdqconnect.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\settings.ps1"
-                    #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\renamePC.ps1"
-    
-                    Set-Location $curLoc
-                    Remove-Item -Path $global:outputFolder -Recurse -Force
-                    #write installed tag
-                    # Create a tag file just so Intune knows this was installed
-                    if (-not (Test-Path "$($env:ProgramData)\LeeCounty\PreProvision"))
+                    Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+                    Remove-AutopilotDevice -id $apv1.id
+                    $dereged = $false
+                    $deregct = 0
+                    while($dereged -eq $false -And $deregct -lt 60 )
                     {
-                        Mkdir "$($env:ProgramData)\LeeCounty\PreProvision"
+                        Start-Sleep -Seconds 5
+                        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                        if($apv1.id)
+                        {
+                            Write-Host "Wating for device to deregister..."
+                            $deregct = $deregct + 1
+                        }else
+                        {
+                            $dereged = $true
+                        }
                     }
-                    Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
-                    
-                    Write-Host "*******************************************************************************************" -ForegroundColor Cyan
-                    Write-Host "* Pre-Provisioning Complete. Before continuing, check above for any errors." -ForegroundColor Cyan
-                    Write-Host "* If no errors, select Yes below to restart and continue provisioning this device." -ForegroundColor Cyan
-                    Write-Host "*******************************************************************************************" -ForegroundColor Cyan
-                   
-                    $title    = 'Restart Device'
-                    $question = 'Are you ready to restart this Device?'
-                    $choices  = '&Yes', '&No', '&Repeat the Question'
-                    do {
-                        $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
-                    } while ($decisionW -ne 0 -and $decisionW -ne 1)
-                    if ($decisionW -eq 0) {    
-                        cd "$($env:windir)\system32\sysprep"
-                        .\sysprep /oobe /reboot
+                     Write-Host "Restarting OOBE" -ForegroundColor Cyan
+                    cd "$($env:windir)\system32\sysprep"
+                    .\sysprep /oobe /reboot
+                } else {
+                               
+                    #provision computer
+                    $curLoc = Get-Location
+                    Set-Location $global:outputFolder
+                    $global:registeredRan = $false
+                    #.\DellCommandConfigure.ps1
+                    .\registerDevice.ps1 -P
+                    if($global:registeredRan)
+                    {
+                        
+                        .\absolute.ps1
+                        .\drivemappingscheduler.ps1
+                        .\addBackgrounds.ps1
+                        .\pdqconnect.ps1
+                        #.\Win11Debloat.ps1
+                        .\settings.ps1
+                        .\add2apv2.ps1
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\DellCommandConfigure.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\registerDevice.ps1" -P
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pro2ent.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\add2apv2.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\absolute.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\drivemappingscheduler.ps1"            
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\addBackgrounds.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\pdqconnect.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\settings.ps1"
+                        #powershell.exe -executionpolicy bypass -file "$($global:outputFolder)\renamePC.ps1"
+        
+                        Set-Location $curLoc
+                        Remove-Item -Path $global:outputFolder -Recurse -Force
+                        #write installed tag
+                        # Create a tag file just so Intune knows this was installed
+                        if (-not (Test-Path "$($env:ProgramData)\LeeCounty\PreProvision"))
+                        {
+                            Mkdir "$($env:ProgramData)\LeeCounty\PreProvision"
+                        }
+                        Set-Content -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag" -Value "Installed"
+                        
+                        Write-Host "*******************************************************************************************" -ForegroundColor Cyan
+                        Write-Host "* Pre-Provisioning Complete. Before continuing, check above for any errors." -ForegroundColor Cyan
+                        Write-Host "* If no errors, close this window to continue provisioning this device." -ForegroundColor Cyan
+                        Write-Host "*******************************************************************************************" -ForegroundColor Cyan
+    
+                    }else{
+                        Write-Host "Script Canceled" -ForegroundColor Red
                     }
-
-                }else{
-                    Write-Host "Script Canceled" -ForegroundColor Red
+                    Set-Location $curLoc
                 }
-                Set-Location $curLoc
                 #exit 1641
                 #$title    = 'Restart Computer'
                 #$question = 'Do you want to restart this computer now (recommended)?'
@@ -240,6 +258,7 @@ if($hottogo){
             Install-Module -Name PSWindowsUpdate -Force
             Import-Module -Name PSWindowsUpdate
             Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
+            Write-Host "Restarting OOBE" -ForegroundColor Cyan
             cd "$($env:windir)\system32\sysprep"
             .\sysprep /oobe /reboot
         }
@@ -261,10 +280,12 @@ if($hottogo){
                 $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
                 $_.RefreshLicenseStatus()
             })
+            Write-Host "Restarting OOBE" -ForegroundColor Cyan
             cd "$($env:windir)\system32\sysprep"
             .\sysprep /oobe /reboot
         }
         
     }
 }
+
 
