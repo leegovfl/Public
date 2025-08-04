@@ -24,6 +24,7 @@ if (Test-Path -Path "$($env:ProgramData)\LeeCounty\PreProvision\PreProvision.tag
    $hottogo = $true
 }
 
+
 if($hottogo){
     if(-not $F)
     {
@@ -263,37 +264,36 @@ if($hottogo){
         if ($decisionW -eq 0) {    
             Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
             if (Get-MgContext) {
-            $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
-            if($apv1.id)
-            {
-                Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-                Remove-AutopilotDevice -id $apv1.id
-                $dereged = $false
-                $deregct = 0
-                while($dereged -eq $false -And $deregct -lt 60 )
+                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+                if($apv1.id)
                 {
-                    Start-Sleep -Seconds 5
-                    $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                    if($apv1.id)
+                    Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+                    Remove-AutopilotDevice -id $apv1.id
+                    $dereged = $false
+                    $deregct = 0
+                    while($dereged -eq $false -And $deregct -lt 60 )
                     {
-                        Write-Host "Wating for device to deregister..."
-                        $deregct = $deregct + 1
-                    }else
-                    {
-                        $dereged = $true
+                        Start-Sleep -Seconds 5
+                        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                        if($apv1.id)
+                        {
+                            Write-Host "Wating for device to deregister..."
+                            $deregct = $deregct + 1
+                        }else
+                        {
+                            $dereged = $true
+                        }
                     }
                 }
+                
+                Install-Module -Name PSWindowsUpdate -Force
+                Import-Module -Name PSWindowsUpdate
+                Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
+                Write-Host "Restarting OOBE" -ForegroundColor Cyan
+                cd "$($env:windir)\system32\sysprep"
+                .\sysprep /oobe /reboot
             }
-            
-            Install-Module -Name PSWindowsUpdate -Force
-            Import-Module -Name PSWindowsUpdate
-            Get-WindowsUpdate -AcceptAll -Install #-AutoReboot
-            Write-Host "Restarting OOBE" -ForegroundColor Cyan
-            cd "$($env:windir)\system32\sysprep"
-            .\sysprep /oobe /reboot
         }
-
-        
     }
     }else {
         write-host "Windows Enterprise is required for Autopilot V2"
@@ -306,41 +306,41 @@ if($hottogo){
         if ($decisionW -eq 0) {  
             Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
             if (Get-MgContext) {
-            $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
-            if($apv1.id)
-            {
-                Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-                Remove-AutopilotDevice -id $apv1.id
-                $dereged = $false
-                $deregct = 0
-                while($dereged -eq $false -And $deregct -lt 60 )
+                $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
+                if($apv1.id)
                 {
-                    Start-Sleep -Seconds 5
-                    $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                    if($apv1.id)
+                    Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
+                    Remove-AutopilotDevice -id $apv1.id
+                    $dereged = $false
+                    $deregct = 0
+                    while($dereged -eq $false -And $deregct -lt 60 )
                     {
-                        Write-Host "Wating for device to deregister..."
-                        $deregct = $deregct + 1
-                    }else
-                    {
-                        $dereged = $true
+                        Start-Sleep -Seconds 5
+                        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
+                        if($apv1.id)
+                        {
+                            Write-Host "Wating for device to deregister..."
+                            $deregct = $deregct + 1
+                        }else
+                        {
+                            $dereged = $true
+                        }
                     }
                 }
+    
+                $sls = Get-WmiObject -Query 'SELECT * FROM SoftwareLicensingService' 
+                @($sls).foreach({
+                    $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
+                    $_.RefreshLicenseStatus()
+                })
+                Write-Host "Restarting OOBE" -ForegroundColor Cyan
+                cd "$($env:windir)\system32\sysprep"
+                .\sysprep /oobe /reboot
             }
-  
-            $sls = Get-WmiObject -Query 'SELECT * FROM SoftwareLicensingService' 
-            @($sls).foreach({
-                $_.InstallProductKey('NPPR9-FWDCX-D2C8J-H872K-2YT43')
-                $_.RefreshLicenseStatus()
-            })
-            Write-Host "Restarting OOBE" -ForegroundColor Cyan
-            cd "$($env:windir)\system32\sysprep"
-            .\sysprep /oobe /reboot
         }
         
     }
 }
-
 
 
 
