@@ -44,7 +44,7 @@ if($hottogo){
     $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion") | Select-Object -Property DisplayVersion,CurrentBuildNumber,UBR,EditionID,ProductName
     write-host "Current Windows Version: $($build.EditionID) $($build.DisplayVersion) $($build.CurrentBuildNumber).$($build.UBR)" -ForegroundColor Cyan
     #min required: 22H2 22621.3374 or 23H2 22631.3374 or 24H2
-    if($build.EditionID -eq "Enterprise") {
+    if($build.EditionID -match "Enterprise") {
     if (($build.CurrentBuildNumber -eq 22621 -and $build.UBR -ge 3374) -or ($build.CurrentBuildNumber -eq 22631 -and $build.UBR -ge 3374) -or $build.CurrentBuildNumber -ge 26100)
     {
         $spTenant = "leegovfl.sharepoint.com"
@@ -341,6 +341,7 @@ if($hottogo){
         
     }
 }
+
 
 
 
