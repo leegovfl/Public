@@ -189,13 +189,16 @@ if($hottogo){
                     $curLoc = Get-Location
                     Set-Location $global:outputFolder
                     $global:registeredRan = $false
+                    $global:adddrivemappings = $true
                     #.\DellCommandConfigure.ps1
                     .\registerDevice.ps1 -P
                     if($global:registeredRan)
                     {
                         
                         .\absolute.ps1
-                        .\drivemappingscheduler.ps1
+                        if($global:adddrivemappings) {
+                            .\drivemappingscheduler.ps1
+                        }
                         .\addBackgrounds.ps1
                         .\pdqconnect.ps1
                         #.\Win11Debloat.ps1
@@ -341,6 +344,7 @@ if($hottogo){
         
     }
 }
+
 
 
 
