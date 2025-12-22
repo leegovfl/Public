@@ -69,7 +69,7 @@ if($hottogo){
             } while ($decision -ne 0 -and $decision -ne 1)
         }
         if ($decision -eq 0 -or $P) {
-            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
+            Connect-MgGraph -TenantId "455d8e4d-5bcc-4762-8166-68677f2224f1" -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
             if (Get-MgContext) {
                 Write-Host "Set Timezone" -ForegroundColor Yellow
                 Set-TimeZone -Id "Eastern Standard Time"
@@ -265,7 +265,7 @@ if($hottogo){
             $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
         } while ($decisionW -ne 0 -and $decisionW -ne 1)
         if ($decisionW -eq 0) {    
-            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
+            Connect-MgGraph -TenantId "455d8e4d-5bcc-4762-8166-68677f2224f1" -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
             if (Get-MgContext) {
                 $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
                 if($apv1.id)
@@ -307,7 +307,7 @@ if($hottogo){
             $decisionW = $Host.UI.PromptForChoice($title, $question, $choices, 2)
         } while ($decisionW -ne 0 -and $decisionW -ne 1)
         if ($decisionW -eq 0) {  
-            Connect-MgGraph -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
+            Connect-MgGraph -TenantId "455d8e4d-5bcc-4762-8166-68677f2224f1" -Scopes "Device.ReadWrite.All,DeviceManagementManagedDevices.ReadWrite.All,DeviceManagementServiceConfig.ReadWrite.All,Sites.ReadWrite.All,User.Read.All,Sites.Read.All,Sites.Selected"
             if (Get-MgContext) {
                 $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber
                 if($apv1.id)
@@ -344,6 +344,7 @@ if($hottogo){
         
     }
 }
+
 
 
 
