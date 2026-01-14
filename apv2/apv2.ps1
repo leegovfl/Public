@@ -164,20 +164,22 @@ if($hottogo){
                 if($apv1.id)
                 {
                     Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-                    Remove-AutopilotDevice -id $apv1.id
-                    $dereged = $false
-                    $deregct = 0
-                    while($dereged -eq $false -And $deregct -lt 60 )
-                    {
-                        Start-Sleep -Seconds 5
-                        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                        if($apv1.id)
+                    foreach($apv1DevID in $apv1.id){
+                        Remove-AutopilotDevice -id $apv1DevID
+                        $dereged = $false
+                        $deregct = 0
+                        while($dereged -eq $false -And $deregct -lt 60 )
                         {
-                            Write-Host "Wating for device to deregister..."
-                            $deregct = $deregct + 1
-                        }else
-                        {
-                            $dereged = $true
+                            Start-Sleep -Seconds 5
+                            $apv1Check = Get-AutoPilotDevice | Where-Object id -eq $apv1DevID
+                            if($apv1Check.id)
+                            {
+                                Write-Host "Wating for device to deregister..."
+                                $deregct = $deregct + 1
+                            }else
+                            {
+                                $dereged = $true
+                            }
                         }
                     }
                      Write-Host "Restarting OOBE" -ForegroundColor Cyan
@@ -271,20 +273,22 @@ if($hottogo){
                 if($apv1.id)
                 {
                     Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-                    Remove-AutopilotDevice -id $apv1.id
-                    $dereged = $false
-                    $deregct = 0
-                    while($dereged -eq $false -And $deregct -lt 60 )
-                    {
-                        Start-Sleep -Seconds 5
-                        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                        if($apv1.id)
+                    foreach($apv1DevID in $apv1.id){       
+                        Remove-AutopilotDevice -id $apv1DevID
+                        $dereged = $false
+                        $deregct = 0
+                        while($dereged -eq $false -And $deregct -lt 60 )
                         {
-                            Write-Host "Wating for device to deregister..."
-                            $deregct = $deregct + 1
-                        }else
-                        {
-                            $dereged = $true
+                            Start-Sleep -Seconds 5
+                            $apv1Check = Get-AutoPilotDevice | Where-Object id -eq $apv1DevID
+                            if($apv1Check.id)
+                            {
+                                Write-Host "Wating for device to deregister..."
+                                $deregct = $deregct + 1
+                            }else
+                            {
+                                $dereged = $true
+                            }
                         }
                     }
                 }
@@ -313,20 +317,22 @@ if($hottogo){
                 if($apv1.id)
                 {
                     Write-Host "Deregistering Device from Autopilot V1...(This device will restart when deregistering is complete)" -ForegroundColor Magenta
-                    Remove-AutopilotDevice -id $apv1.id
-                    $dereged = $false
-                    $deregct = 0
-                    while($dereged -eq $false -And $deregct -lt 60 )
-                    {
-                        Start-Sleep -Seconds 5
-                        $apv1 = Get-AutoPilotDevice | Where-Object SerialNumber -eq $serialNumber 
-                        if($apv1.id)
+                    foreach($apv1DevID in $apv1.id){       
+                        Remove-AutopilotDevice -id $apv1DevID
+                        $dereged = $false
+                        $deregct = 0
+                        while($dereged -eq $false -And $deregct -lt 60 )
                         {
-                            Write-Host "Wating for device to deregister..."
-                            $deregct = $deregct + 1
-                        }else
-                        {
-                            $dereged = $true
+                            Start-Sleep -Seconds 5
+                            $apv1Check = Get-AutoPilotDevice | Where-Object id -eq $apv1DevID
+                            if($apv1Check.id)
+                            {
+                                Write-Host "Wating for device to deregister..."
+                                $deregct = $deregct + 1
+                            }else
+                            {
+                                $dereged = $true
+                            }
                         }
                     }
                 }
@@ -344,6 +350,7 @@ if($hottogo){
         
     }
 }
+
 
 
 
